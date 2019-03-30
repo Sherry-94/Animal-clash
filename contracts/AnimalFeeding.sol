@@ -7,6 +7,10 @@ pragma solidity ^0.4.25;
 
 import "./AnimalFactory.sol";
 
+/**
+ * @title Crypto Kitties Contract Interface 
+ * @notice this interface only uses getKitty function to return genes of a kitty
+ */
 contract CryptoKittyInterface {
     function getKitty(uint256 _id) external view returns (
         bool isGestating,
@@ -22,6 +26,10 @@ contract CryptoKittyInterface {
     );
 }
 
+/**
+ * @title AnimalFeeding 
+ * @notice handles the feeding logic for Animals
+ */
 contract AnimalFeeding is AnimalFactory {
 
     CryptoKittyInterface cryptoKitty;
@@ -43,6 +51,13 @@ contract AnimalFeeding is AnimalFactory {
         return (_animal.readyTime <= now);
     }
 
+    /**
+    * @title AnimalFeeding 
+    * @dev main function to handle feeding logic
+    * @param _animalId, attacker animal
+    * @param _targetDna, target animal/kitty
+    * @param _species, identifier, either animal or crypto kitty
+    */
     function feedAndMultiply(uint _animalId, uint _targetDna, string _species) 
         internal
         isAnimalOwner(_animalId)
@@ -58,6 +73,12 @@ contract AnimalFeeding is AnimalFactory {
             _triggerCooldown(myAnimal);
         }
 
+    /**
+    * @title AnimalFeeding 
+    * @dev main function to handle feeding on Crypto kitty
+    * @param _animalId, attacker animal
+    * @param _kittyId, target kitty 
+    */
     function feedOnKitty(uint _animalId, uint _kittyId) public {
         uint kittyDna;
         (,,,,,,,,,kittyDna) = cryptoKitty.getKitty(_kittyId);
